@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:loginwith_firebase/homepage.dat.dart';
+
 final auth = FirebaseAuth.instance;
 
 class MyHomePage extends StatefulWidget {
@@ -31,17 +32,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   hintText: 'Password', prefixIcon: Icon(Icons.lock)),
             ),
             ElevatedButton(
-              onPressed: ()  async {
-                try{
-                  final currentuser = await auth.signInWithEmailAndPassword
-                    (email: emailControllar.text,  password: passwordControllar.text, );
-                if(currentuser != null){
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (_)=>MyHomePage(),),);
-                }
-                }on FirebaseAuthException catch(e){
-                  print(e.message.toString());
+              onPressed: () async {
+                try {
+                  final currentuser = await auth.signInWithEmailAndPassword(
+                    email: emailControllar.text,
+                    password: passwordControllar.text,
+                  );
+                  if (currentuser != null) {
+                    print(currentuser.credential);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => WelcomePage(),
+                      ),
+                    );
                   }
+                } on FirebaseAuthException catch (e) {
+                  print(e.message.toString());
+                }
               },
               child: Text('submit'),
             )
